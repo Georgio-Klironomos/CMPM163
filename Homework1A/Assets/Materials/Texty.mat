@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: BradysFro
-  m_Shader: {fileID: 4800000, guid: 603d79eaf59466c4e8887bb7d9a82333, type: 3}
+  m_Name: Texty
+  m_Shader: {fileID: 4800000, guid: 898f19fc717f70642a62551300ffee68, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -40,7 +40,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 58e72baefd884094797f1c54dae94738, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
@@ -78,5 +78,7 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _Color: {r: 0.24528301, g: 0.23038091, b: 0.21867211, a: 1}
+    - _Color1: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.8584906, g: 0.2794144, b: 0.2794144, a: 1}
+    - _SpecularColor: {r: 1, g: 1, b: 1, a: 1}
