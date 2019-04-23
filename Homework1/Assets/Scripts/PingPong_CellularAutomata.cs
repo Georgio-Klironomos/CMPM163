@@ -23,8 +23,8 @@ public class PingPong_CellularAutomata : MonoBehaviour
     {
         //print(SystemInfo.copyTextureSupport);
 
-        width = 64;
-        height = 64;
+        width = 128;
+        height = 128;
 
         texA = new Texture2D(width, height, TextureFormat.RGBA32, false);
         texB = new Texture2D(width, height, TextureFormat.RGBA32, false);
@@ -36,9 +36,11 @@ public class PingPong_CellularAutomata : MonoBehaviour
             for (int j = 0; j < width; j++)
                 if (Random.Range(0.0f, 1.0f) < 0.5)
                 {
-                    texA.SetPixel(i, j, Color.black);
+                    texA.SetPixel(i, j, Color.blue);
+                } else if (Random.Range(0.0f, 1.0f) > 0.9) {
+                    texA.SetPixel(i, j, Color.green);
                 } else {
-                    texA.SetPixel(i, j, Color.white);
+                    texA.SetPixel(i, j, Color.red);
                 }
 
         texA.Apply(); //copy changes to the GPU

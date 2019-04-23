@@ -83,20 +83,20 @@
                     if (cnt == 2 || cnt == 3) {
                         //Any live cell with two or three live neighbours lives on to the next generation.
                 
-                        return float4(1.0,1.0,1.0,1.0);
+                        return float4(2.0,2.0,2.0,2.0);
                     } else {
                         //Any live cell with fewer than two live neighbours dies, as if caused by underpopulation.
                         //Any live cell with more than three live neighbours dies, as if by overpopulation.
 
-                        return float4(0.0,0.0,0.0,1.0);
+                        return float4(0.0,1.0,0.0,1.0);
                     }
                 } else { //cell is dead
                     if (cnt == 3) {
                         //Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.
 
-                        return float4(1.0,1.0,1.0,1.0);
+                        return float4(2.0,2.0,2.0,2.0);
                     } else {
-                        return float4(0.0,0.0,0.0,1.0);
+                        return float4(0.0,1.0,0.0,1.0);
 
                     }
                 }

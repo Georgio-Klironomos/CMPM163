@@ -1,11 +1,10 @@
 ﻿
-//Adapted from Example 5.3 in The CG Tutorial by Fernando & Kilgard
-Shader "Custom/Phong"
+Shader "Custom/Toon"
 {
     Properties
     {   
         _Color ("Color", Color) = (1, 1, 1, 1) //The color of our object
-        _Shininess ("Shininess", Float) = 10 //Shininess
+        _Shininess ("Shininess", Float) = 32 //Shininess
         _SpecColor ("Specular Color", Color) = (1, 1, 1, 1) //Specular highlights color
     }
     
@@ -13,7 +12,7 @@ Shader "Custom/Phong"
     {
         Pass {
             Tags { "LightMode" = "ForwardAdd" } //Important! In Unity, point lights are calculated in the the ForwardAdd pass
-            Blend One One //Turn on additive blending if you have more than one point light
+            // Blend One One //Turn on additive blending if you have more than one point light
           
             
             CGPROGRAM
@@ -37,8 +36,7 @@ Shader "Custom/Phong"
             struct v2f
             {
                     float4 vertex : SV_POSITION;
-					//float3 normal: NORMAL;
-					float3 normalInWorldCoords : NORMAL;
+                    float3 normalInWorldCoords : NORMAL;       
                     float3 vertexInWorldCoords : TEXCOORD1;
             };
 
@@ -47,8 +45,7 @@ Shader "Custom/Phong"
            { 
                 v2f o;
                 o.vertexInWorldCoords = mul(unity_ObjectToWorld, v.vertex); //Vertex position in WORLD coords
-			  //o.normal = v.normal; //Normal 
-				o.normalInWorldCoords = UnityObjectToWorldNormal(v.normal); //Normal in WORLD coords
+                o.normalInWorldCoords = UnityObjectToWorldNormal(v.normal); //Normal in WORLD coords
                 o.vertex = UnityObjectToClipPos(v.vertex); 
                 
               
@@ -72,13 +69,50 @@ Shader "Custom/Phong"
                 float3 Kl = _LightColor0.rgb; //Color of light
                 
                 
+                const float A = 0.3; //0.5;
+                const float B = 0.6; //1.0;
+                const float C = 0.9;
+                
+                
                 //AMBIENT LIGHT 
                 float3 ambient = Ka;
                 
                
+              
                 //DIFFUSE LIGHT
                 float diffuseVal = max(dot(N, L), 0);
-                float3 diffuse = Kd * Kl * diffuseVal;
+                float lightIntensity = diffuseVal;
+                
+                
+                float stepVal = 0.02;
+                
+                /*
+                //Cel shading
+                 if (diffuseVal < A) diffuseVal = A;
+                 else if (diffuseVal < B) diffuseVal = B;
+                 else if (diffuseVal < C) diffuseVal = C;
+                 else diffuseVal = 1.0;
+                 lightIntensity = diffuseVal;
+                 */
+                 
+                 
+                 
+                 //Cel shading with smoothstep (emulating transitions between color values in a 1d texture ramp)
+                 
+                 
+                 
+                 if (diffuseVal >= 0 && diffuseVal < stepVal) diffuseVal = 0 + A * smoothstep(0, stepVal, diffuseVal);
+                 else if (diffuseVal < A) diffuseVal = A;
+                 else if (diffuseVal >= A && diffuseVal < A+stepVal) diffuseVal = A + (B-A) * smoothstep(A, A+stepVal, diffuseVal);
+                 else if (diffuseVal < B) diffuseVal = B;
+                 else if (diffuseVal >= B && diffuseVal < B+stepVal) diffuseVal = B + (C-B) * smoothstep(B, B+stepVal, diffuseVal);
+                 else if (diffuseVal < C) diffuseVal = C;
+                 else if (diffuseVal >= C && diffuseVal < C+stepVal) diffuseVal = C + (1.0 - C) * smoothstep(C, C+stepVal, diffuseVal);
+                 else diffuseVal = 1.0; 
+                 
+                 
+                 lightIntensity = diffuseVal; 
+                 float3 diffuse = Kd * Kl * lightIntensity;
                 
                 
                 //SPECULAR LIGHT
@@ -88,11 +122,12 @@ Shader "Custom/Phong"
                     specularVal = 0;
                 }
                 
+                specularVal = smoothstep(0.25, 0.25 + stepVal, specularVal);
                 float3 specular = Ks * Kl * specularVal;
                 
                 //FINAL COLOR OF FRAGMENT
                 return float4(ambient + diffuse + specular, 1.0);
-                //return float4(ambient, 1.0);
+                
 
             }
             

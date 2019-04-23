@@ -14,7 +14,7 @@
 		{
 			Tags {"LightMode" = "ForwardAdd"}
 
-			Blend One One
+			//Blend One One
 
 			CGPROGRAM
 			#pragma vertex vert
@@ -40,7 +40,8 @@
             struct VertexShaderOutput
             {
                 float2 uv : TEXCOORD0;
-				float3 normal: NORMAL;
+				//float3 normal: NORMAL;
+				float3 normalInWorldCoords : NORMAL;
 				float3 vertexInWorldCoords: float3;
                 float4 vertex : SV_POSITION;
             };
@@ -52,7 +53,8 @@
                 VertexShaderOutput o;
                 
 				o.vertexInWorldCoords = mul(unity_ObjectToWorld, v.vertex); //Vertex position in WORLD coords
-				o.normal = v.normal; //Normal 
+				//o.normal = v.normal; //Normal 
+				o.normalInWorldCoords = UnityObjectToWorldNormal(v.normal); //Normal in WORLD coords
 
                 o.vertex = UnityObjectToClipPos(v.vertex);
                 o.uv = v.uv; 
@@ -66,7 +68,7 @@
 				float3 ambientComponent = Ka * globalAmbient;
 
 				float3 P = i.vertexInWorldCoords.xyz;
-				float3 N = normalize(i.normal);
+				float3 N = normalize(i.normalInWorldCoords);
 				float3 L = normalize(_WorldSpaceLightPos0.xyz - P);
 				float3 Kd = _Color.rgb; //Color of object
 				float3 lightColor = _LightColor0.rgb; //Color of light
