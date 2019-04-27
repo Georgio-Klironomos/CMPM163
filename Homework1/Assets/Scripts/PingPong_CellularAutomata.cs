@@ -36,11 +36,11 @@ public class PingPong_CellularAutomata : MonoBehaviour
             for (int j = 0; j < width; j++)
                 if (Random.Range(0.0f, 1.0f) < 0.5)
                 {
-                    texA.SetPixel(i, j, Color.blue);
-                } else if (Random.Range(0.0f, 1.0f) > 0.9) {
+                    texA.SetPixel(i, j, Color.white);
+                } /*else if (Random.Range(0.0f, 1.0f) > 0.9) {
                     texA.SetPixel(i, j, Color.green);
-                } else {
-                    texA.SetPixel(i, j, Color.red);
+                } */else {
+                    texA.SetPixel(i, j, Color.black);
                 }
 
         texA.Apply(); //copy changes to the GPU
