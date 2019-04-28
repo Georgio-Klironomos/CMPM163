@@ -17,10 +17,10 @@ Shader "Custom/Phong"
           
             
             CGPROGRAM
-            #pragma vertex vert
+            #pragma vertex vert // Define the vert and frag functions to the compiler
             #pragma fragment frag
 
-            #include "UnityCG.cginc"
+            #include "UnityCG.cginc" // include Unity's prebuilt shader declarations and functions
             
            
             uniform float4 _LightColor0; //From UnityCG
@@ -28,13 +28,13 @@ Shader "Custom/Phong"
             uniform float4 _SpecColor;
             uniform float _Shininess;          
           
-            struct appdata
+            struct appdata // type to hold scene data
             {
                     float4 vertex : POSITION;
                     float3 normal : NORMAL;
             };
 
-            struct v2f
+            struct v2f // type legible to the frag func/GPU
             {
                     float4 vertex : SV_POSITION;
 					//float3 normal: NORMAL;
@@ -43,27 +43,24 @@ Shader "Custom/Phong"
             };
 
  
-           v2f vert(appdata v)
+           v2f vert(appdata v) // convert scene texture data to be used by the GPU
            { 
                 v2f o;
                 o.vertexInWorldCoords = mul(unity_ObjectToWorld, v.vertex); //Vertex position in WORLD coords
 			  //o.normal = v.normal; //Normal 
 				o.normalInWorldCoords = UnityObjectToWorldNormal(v.normal); //Normal in WORLD coords
-                o.vertex = UnityObjectToClipPos(v.vertex); 
-                
-              
-
+                o.vertex = UnityObjectToClipPos(v.vertex); // Transforms a point from object space to the camera’s clip space in homogeneous coordinates
                 return o;
            }
 
-           fixed4 frag(v2f i) : SV_Target
+           fixed4 frag(v2f i) : SV_Target // Modify the vertices of the texture to color fragments for the GPU
            {
                 
-                float3 P = i.vertexInWorldCoords.xyz;
-                float3 N = normalize(i.normalInWorldCoords);
-                float3 V = normalize(_WorldSpaceCameraPos - P);
-                float3 L = normalize(_WorldSpaceLightPos0.xyz - P);
-                float3 H = normalize(L + V);
+                float3 P = i.vertexInWorldCoords.xyz; // Worldspace position of the vertex
+                float3 N = normalize(i.normalInWorldCoords); // Surface normal of the texel
+                float3 V = normalize(_WorldSpaceCameraPos - P); // View vector, points to the camera
+                float3 L = normalize(_WorldSpaceLightPos0.xyz - P); // light vector, points to the light affecting the object
+                float3 H = normalize(L + V); // halway between light and view, used to calbulate specular highlights
                 
                 float3 Kd = _Color.rgb; //Color of object
                 float3 Ka = UNITY_LIGHTMODEL_AMBIENT.rgb; //Ambient light
@@ -74,12 +71,10 @@ Shader "Custom/Phong"
                 
                 //AMBIENT LIGHT 
                 float3 ambient = Ka;
-                
                
                 //DIFFUSE LIGHT
                 float diffuseVal = max(dot(N, L), 0);
                 float3 diffuse = Kd * Kl * diffuseVal;
-                
                 
                 //SPECULAR LIGHT
                 float specularVal = pow(max(dot(N,H), 0), _Shininess);
