@@ -18,7 +18,7 @@ public class MousePosition : MonoBehaviour
     void Update()
     {
         //render.material.SetFloat("_mX", Input.mousePosition.x);
-        render.material.SetFloat("_Steps", Mathf.Clamp(Input.mousePosition.y/10, 0, 100));
+        render.material.SetFloat("_Steps", Mathf.Clamp((Input.mousePosition.y-300)/10, 0, 100));
 
 
         //Debug.Log(Input.mousePosition);
