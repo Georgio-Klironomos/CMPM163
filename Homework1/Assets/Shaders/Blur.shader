@@ -70,9 +70,6 @@
 				}             
         
 				return float4(avg, 1.0);
-         
-           
-               
             }
             ENDCG
         }
