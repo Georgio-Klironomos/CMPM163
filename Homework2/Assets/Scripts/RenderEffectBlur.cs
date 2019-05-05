@@ -12,7 +12,7 @@ public class RenderEffectBlur : MonoBehaviour
 
     private float curSpeed;
     private float topSpeed;
-    private UnityStandardAssets.Vehicles.Car.CarController car;
+   //private UnityStandardAssets.Vehicles.Car.CarController car;
 
     Material ScreenMat
     {
@@ -40,8 +40,8 @@ public class RenderEffectBlur : MonoBehaviour
         {
             enabled = false;
         }
-        car = carGameObject.GetComponent<UnityStandardAssets.Vehicles.Car.CarController>();
-        topSpeed = car.MaxSpeed;
+        //car = carGameObject.GetComponent<UnityStandardAssets.Vehicles.Car.CarController>();
+        //topSpeed = car.MaxSpeed;
     }
 
     void OnRenderImage(RenderTexture sourceTexture, RenderTexture destTexture)
@@ -49,9 +49,9 @@ public class RenderEffectBlur : MonoBehaviour
         if (curShader != null)
         {
             //Get current car speed
-            curSpeed = car.CurrentSpeed;
+            //curSpeed = car.CurrentSpeed;
             //Calculate blur factor with current speed and top speed
-            float blurFactor = Mathf.Clamp((curSpeed / topSpeed) * 5, 0, 40);
+            float blurFactor = Mathf.Clamp((6 / 12) * 5, 0, 40);
             //Set "_Steps" in shader. Interpolate linearly from 0 to 20 based on blur factor
             ScreenMat.SetFloat("_Steps", blurFactor * Mathf.Lerp(0, 20, blurFactor));
 

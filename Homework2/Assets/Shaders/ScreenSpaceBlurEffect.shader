@@ -43,7 +43,7 @@ Shader "Custom/ScreenSpaceBlurEffect"
                     avg /= steps * steps;
                 }  
                 
-                return float4(avg, 1.0);
+				return float4(avg, 1.0);// +float4(1, 1, 1, 1);
             }
         
         ENDCG
