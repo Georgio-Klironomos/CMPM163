@@ -94,7 +94,7 @@
 			{
 
 
-				return float4(1, 1, 0, 0);
+				return float4(0, 1, 0.4, 0);
 			}
 
 			ENDCG
