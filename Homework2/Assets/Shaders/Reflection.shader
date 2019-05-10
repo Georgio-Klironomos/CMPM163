@@ -2,9 +2,12 @@
     Properties {
       
       _Cube ("Cubemap", CUBE) = "" {}
+	_Transparency("Transparency", Range(0,1.0)) = 0.25
     }
      SubShader
     {
+		Tags {"Queue" = "Transparent" "RenderType" = "Transparent"}
+
         Pass
         {
             CGPROGRAM
@@ -41,10 +44,11 @@
             }
             
             samplerCUBE _Cube;
+			float _Transparency;
             
             fixed4 frag (v2f i) : SV_Target
             {
-            
+				
              float3 P = i.vertexInWorldCoords.xyz;
              
              //get normalized incident ray (from camera to vertex)
@@ -70,10 +74,10 @@
              float4 refractColorRed = texCUBE( _Cube, float3( vRefractRed ) );
              float4 refractColorGreen = texCUBE( _Cube, float3( vRefractGreen ) );
              float4 refractColorBlue = texCUBE( _Cube, float3( vRefractBlue ) );
-             float4 refractColor = float4(refractColorRed.r, refractColorGreen.g, refractColorBlue.b, 1.0);
+             float4 refractColor = float4(refractColorRed.r, refractColorGreen.g, refractColorBlue.b, _Transparency);
              
              
-             return float4(lerp(reflectColor, refractColor, 0.5).rgb, 1.0);
+             return lerp(float4(lerp(reflectColor, refractColor, _Transparency).rgb, _Transparency), float4(0,0.7,1,_Transparency), 0.35);
                 
                 
             }
