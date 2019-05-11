@@ -1,9 +1,13 @@
-﻿Shader "Custom/Outline"
+﻿//WORKS CITED: https://www.youtube.com/watch?v=OJkGGuudm38
+
+Shader "Custom/Outline"
 {
     Properties
     {
-		_Outline("Outline", Float) = 0
+		_Outline("Outline", Float) = 0 // Thickness of the outline
 		 _Color("Color", Color) = (1, 1, 1, 1) //The color of our object
+		_OutColor("OutColor", Color) = (1, 1, 1, 1)
+		_EdgeColor("XRay Edge Color", Color) = (0,0,0,0) // XRay rim color
 		_EmmisiveColor("Emmisive Color", Color) = (1, 1, 1, 1)
 		_Emissiveness("Emmissiveness", Range(0,10)) = 0
 		_Shininess("Shininess", Float) = 10 //Shininess
@@ -12,6 +16,40 @@
 	}
 		SubShader
 	{
+
+		/*Tags {
+				"Queue" = "Geometry-1"
+				"X-Ray" = "Rim"
+			}
+
+		LOD 200*/
+		/*Pass{
+			Tags {
+				"Queue" = "Geometry-1"
+				"X-Ray" = "Rim"
+			}
+
+			LOD 200
+
+			CGPROGRAM
+		#pragma surface surf Lambert
+
+		sampler2D _MainTex;
+		fixed4 _Color;
+
+		struct v2f {
+			float2 uv_MainTex;
+		};
+
+		void surf(v2f IN, inout SurfaceOutput o)
+		{
+			fixed4 c = tex2D(_MainTex, IN.uv_MainTex) * _Color;
+			o.Albedo = c.rgb;
+			o.Alpha = c.a;
+		}
+		ENDCG
+		}*/
+
 		Pass{
 			Cull Front
 
@@ -22,8 +60,7 @@
 
 			 #include "UnityCG.cginc"
 
-			uniform float4 _EmmisiveColor;
-			uniform float _Emissiveness;
+			uniform float4 _OutColor;
 			float _Outline;
 
 			struct appdata
@@ -56,7 +93,7 @@
 
 
 				//float4 col = (1, 1, 1, 0);
-				return float4(1, 1, 1, 0);
+				return _OutColor;
 			}
 
 			ENDCG
