@@ -60,7 +60,7 @@
             ENDCG
         }
         
-        // Blur pass - This is a box blur which affect the performance. Try implementing an efficent blur 
+        // Blur pass - The calculations are still super inefficient, but it's clamped!
         Pass
         {
             CGPROGRAM
@@ -112,7 +112,8 @@
                 } else {
         
                 int x, y;
-        
+				
+				// Average out the bright pixels for that good good blur
                 for ( x = -steps/2; x <=steps/2 ; x++) {
                     for (int y = -steps/2; y <= steps/2; y++) {
                         avg += tex2D( _MainTex, i.uv + texel * float2( x, y ) ).rgb;

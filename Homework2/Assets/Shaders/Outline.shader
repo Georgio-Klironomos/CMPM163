@@ -16,42 +16,9 @@ Shader "Custom/Outline"
 	}
 		SubShader
 	{
-
-		/*Tags {
-				"Queue" = "Geometry-1"
-				"X-Ray" = "Rim"
-			}
-
-		LOD 200*/
-		/*Pass{
-			Tags {
-				"Queue" = "Geometry-1"
-				"X-Ray" = "Rim"
-			}
-
-			LOD 200
-
-			CGPROGRAM
-		#pragma surface surf Lambert
-
-		sampler2D _MainTex;
-		fixed4 _Color;
-
-		struct v2f {
-			float2 uv_MainTex;
-		};
-
-		void surf(v2f IN, inout SurfaceOutput o)
-		{
-			fixed4 c = tex2D(_MainTex, IN.uv_MainTex) * _Color;
-			o.Albedo = c.rgb;
-			o.Alpha = c.a;
-		}
-		ENDCG
-		}*/
-
+		// Pass for the Outline itself
 		Pass{
-			Cull Front
+			Cull Front // What makes this an outline and not just a cover for the object
 
 			CGPROGRAM
 
@@ -99,6 +66,7 @@ Shader "Custom/Outline"
 			ENDCG
 		}
 
+		// Under the outline, color the statue a nice jade green
 		Pass{
 		//Cull Front
 
@@ -145,7 +113,8 @@ Shader "Custom/Outline"
 
 			ENDCG
 		}
-
+		
+		//Toss in a Phong pass just for good measure
 		Pass {
 			Tags { "LightMode" = "ForwardAdd" } //Important! In Unity, point lights are calculated in the the ForwardAdd pass
 			Blend One One //Turn on additive blending if you have more than one point light
@@ -233,7 +202,7 @@ Shader "Custom/Outline"
 				float4 texColor = tex2D(_MainTex, i.uv);
 				//FINAL COLOR OF FRAGMENT
 
-				return float4(_EmmisiveColor * _Emissiveness + ambient + diffuse + specular, 1.0)*texColor;
+				return float4(_EmmisiveColor * _Emissiveness + ambient + diffuse + specular, 1.0)*texColor; // What makes the Phong work!
 
 			}
 

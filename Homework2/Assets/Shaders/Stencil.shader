@@ -1,4 +1,5 @@
-﻿Shader "Custom/Stencil"
+﻿// WORKS CITED: https://www.youtube.com/watch?v=OJkGGuudm38
+Shader "Custom/Stencil"
 {
     Properties
     {
@@ -10,11 +11,11 @@
         Tags { "RenderType"="Opaque" }
         LOD 200
 
-		Stencil {
-			Ref 1
-			Comp Always
-			Pass Replace
-			ZFail Keep
+		Stencil { // Stencil is a per pixel mask for saving or discarding pixels
+			Ref 1 // The value to be written to the buffer
+			Comp Always // Compares the reference value to the current buffer contents
+			Pass Replace // What to do with the contents of the buffer if the stencil test passes
+			ZFail Keep // what to do with the contents of the buffer if the stencil test passes but the depth test fails
 		}
 
         CGPROGRAM

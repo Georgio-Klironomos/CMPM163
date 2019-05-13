@@ -6,9 +6,9 @@ Shader "Custom/Rim" {
 	}
 
 	SubShader{
-		Stencil{
-			Ref 0
-			Comp NotEqual
+		Stencil{ // Stencil is a per pixel mask for saving or discarding pixels
+			Ref 0 // The value to be written to the buffer
+			Comp NotEqual // Compares the reference value to the current buffer contents
 		}
 		  
 		Tags {
@@ -17,8 +17,8 @@ Shader "Custom/Rim" {
 			"XRay" = "ColoredOutline"
 		}
 
-		ZWrite Off
-		ZTest Always
+		ZWrite Off // Controls whether pixels from this object are written to the depth buffer
+		ZTest Always // How depth testing should be performed
 		Blend One One // Activates additive blending
 
 		Pass{ // Only one rendering pass
@@ -44,18 +44,18 @@ Shader "Custom/Rim" {
 
 			v2f vert(appdata v) {
 				v2f output;
-				output.vertex = UnityObjectToClipPos(v.vertex);
+				output.vertex = UnityObjectToClipPos(v.vertex); // transform the vertex position from world space to camera clip space
 				output.uv = v.uv;
 				output.normal = UnityObjectToWorldNormal(v.normal); // Because we want the worldpace normals instead of the surface normals
-				output.viewDir = normalize(_WorldSpaceCameraPos.xyz - mul(unity_ObjectToWorld, v.vertex).xyz);
+				output.viewDir = normalize(_WorldSpaceCameraPos.xyz - mul(unity_ObjectToWorld, v.vertex).xyz); // Get the direction of view to the object
 				return output;
 			}
 
 			float4 _EdgeColor;
 
 			fixed4 frag (v2f i) : SV_Target {
-				float NdotV = 1 - dot(i.normal, i.viewDir) * 1.5;
-				return _EdgeColor * NdotV;
+				float NdotV = (1 - dot(i.normal, i.viewDir) * 1.5); // get the dot product of the point's normal and view direction 
+				return _EdgeColor * NdotV; // return the edge color from the points we select
 			}
 			ENDCG
 		}

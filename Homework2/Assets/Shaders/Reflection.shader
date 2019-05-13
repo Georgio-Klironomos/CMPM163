@@ -8,6 +8,13 @@
     {
 		Tags {"Queue" = "Transparent" "RenderType" = "Transparent"}
 
+		Stencil { // Stencil is a per pixel mask for saving or discarding pixels
+			Ref 1 // The value to be written to the buffer
+			Comp Always // Compares the reference value to the current buffer contents
+			Pass Replace // What to do with the contents of the buffer if the stencil test passes
+			ZFail Keep // what to do with the contents of the buffer if the stencil test passes but the depth test fails
+		}
+
         Pass
         {
             CGPROGRAM
@@ -76,7 +83,7 @@
              float4 refractColorBlue = texCUBE( _Cube, float3( vRefractBlue ) );
              float4 refractColor = float4(refractColorRed.r, refractColorGreen.g, refractColorBlue.b, _Transparency);
              
-             
+             // It's lerp city over here! This allows us to mes with the transparency of the object
              return lerp(float4(lerp(reflectColor, refractColor, _Transparency).rgb, _Transparency), float4(0,0.7,1,_Transparency), 0.35);
                 
                 
@@ -86,7 +93,7 @@
         }
     }
 
-    
+    // Throw in a simple shader in case the reflection doesn't work
     SubShader {
       Tags { "RenderType" = "Opaque" }
       CGPROGRAM
