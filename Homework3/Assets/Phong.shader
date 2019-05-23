@@ -101,7 +101,7 @@ Shader "CM163/Phong"
                 float4 texColor = tex2D(_MainTex, i.uv);
                 //FINAL COLOR OF FRAGMENT
               
-                return float4(_EmmisiveColor * _Emissiveness + ambient+ diffuse + specular, 1.0)*texColor;
+                return float4(_EmmisiveColor * (_Emissiveness) + ambient+ diffuse + specular, 1.0)*texColor;
  
             }
             
