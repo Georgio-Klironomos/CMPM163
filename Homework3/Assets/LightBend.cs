@@ -43,7 +43,7 @@ public class LightBend : MonoBehaviour {
 		float mag = aveMag[0];
 
         // Set mag to _Bend in the TreeShader
-        rend.material.SetFloat("_Shininess", Mathf.Lerp(-500, 500, mag));// = mag;
+        rend.material.SetFloat("_Shininess", Mathf.Lerp(rend.material.GetFloat("_Shininess"), Mathf.Lerp(-500, 500, mag) - 30, 0.8f));// = mag;
 
 
 
