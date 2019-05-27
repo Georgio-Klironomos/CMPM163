@@ -1,0 +1,6 @@
+Sources for Homework 3:
+  I've created a foggy, neon cityspace using my old phong shader, the audio script we learned about in section affecting the colored windows,
+  and some simple particle effects plus noise to create fog.
+Music: Alittlebitdrunkguy, https://freesound.org/people/Alittlebitdrunkguy/sounds/445793/ 
+Fog Tutorial:  https://www.youtube.com/watch?v=p7JMudbULsA
+Skybox: Greg Zaal, https://hdrihaven.com/hdri/?c=night&h=moonless_golf
